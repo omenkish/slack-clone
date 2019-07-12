@@ -30,6 +30,7 @@
     "graphql": "^14.4.2",
     "graphql-tools": "^4.0.5",
     "lodash": "^4.17.11",
+    "pg": "^7.11.0",
     "sequelize": "^5.10.0"
   }
 }
