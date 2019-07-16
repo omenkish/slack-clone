@@ -1,5 +1,11 @@
 export default (sequelize, DataTypes) => {
   const Message = sequelize.define('message', {
+    id: {
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4,
+      allowNull: false,
+      primaryKey: true,
+    },
     text: DataTypes.STRING,
   });
 
