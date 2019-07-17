@@ -12,9 +12,13 @@ export default (sequelize, DataTypes) => {
     },
     email: {
       type: DataTypes.STRING,
+      allowNull: false,
       unique: true,
     },
-    password: DataTypes.STRING,
+    password: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
   });
 
   User.associate = (models) => {
