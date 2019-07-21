@@ -26,7 +26,7 @@ const app = express();
 app.use(cors('*'));
 server.applyMiddleware({ app }); // app is from an existing express app
 
-models.sequelize.sync().then(() => {
+models.sequelize.sync({ force: true }).then(() => {
   // eslint-disable-next-line no-console
   app.listen({ port: 8080 }, () => console.log(`Server ready at http://localhost:4000${server.graphqlPath}`));
 });
