@@ -7,6 +7,9 @@ import cors from 'cors';
 
 import models from './models';
 
+const SECRET = 'thisiswhywearehere';
+const SECRET2 = 'thisiswhywearehereiuhjbnklkjiuhbj';
+
 const typeDefs = mergeTypes(fileLoader(path.join(__dirname, './schema')));
 const resolvers = mergeResolvers(fileLoader(path.join(__dirname, './resolvers')));
 
@@ -20,13 +23,15 @@ const server = new ApolloServer({
     user: {
       id: 'a139ba98-430c-4e03-9e98-71e1b166e9dd',
     },
+    SECRET,
+    SECRET2,
   }),
 });
 const app = express();
 app.use(cors('*'));
 server.applyMiddleware({ app }); // app is from an existing express app
 
-models.sequelize.sync({ force: true }).then(() => {
+models.sequelize.sync().then(() => {
   // eslint-disable-next-line no-console
   app.listen({ port: 8080 }, () => console.log(`Server ready at http://localhost:4000${server.graphqlPath}`));
 });
