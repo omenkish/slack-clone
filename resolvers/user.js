@@ -1,12 +1,5 @@
-import _ from 'lodash';
-import { tryLogin } from '../auth';
-
-const formatErrors = (e, models) => {
-  if (e instanceof models.Sequelize.ValidationError) {
-    return e.errors.map(x => _.pick(x, ['path', 'message']));
-  }
-  return [{ path: 'name', message: 'something went wrong' }];
-};
+import { tryLogin } from '../utils/auth';
+import formatErrors from '../utils/formatErrors';
 
 export default {
   Query: {
@@ -14,9 +7,9 @@ export default {
     allUsers: (parent, args, { models }) => models.User.findAll(),
   },
   Mutation: {
-    login: (parent, { email, password }, { models, SECRET, SECRET2 }) =>
+    login: (parent, { email, password }, context) =>
       // eslint-disable-next-line implicit-arrow-linebreak
-      tryLogin(email, password, models, SECRET, SECRET2),
+      tryLogin(email, password, context),
     register: async (parent, args, { models }) => {
       try {
         const user = await models.User.create(args);

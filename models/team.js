@@ -9,6 +9,12 @@ export default (sequelize, DataTypes) => {
     name: {
       type: DataTypes.STRING,
       unique: true,
+      validate: {
+        len: {
+          args: [3, 25],
+          msg: 'Team name must be 3 to 25 characters long',
+        },
+      },
     },
   });
 

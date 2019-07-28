@@ -7,7 +7,12 @@ export default `
     channels: [Channel!]!
   }
 
+  type CreateTeamResponse {
+    ok: Boolean!
+    errors: [Error!]
+  }
+
   type Mutation {
-    createTeam(name: String!): Team!
+    createTeam(name: String!): CreateTeamResponse!
   }
 `;
