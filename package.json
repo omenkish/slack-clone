@@ -24,10 +24,9 @@
   },
   "dependencies": {
     "@babel/polyfill": "^7.4.4",
-    "apollo-server-express": "^2.6.9",
+    "apollo-server": "^2.7.0",
     "bcrypt": "^3.0.6",
     "body-parser": "^1.19.0",
-    "cors": "^2.8.5",
     "express": "^4.17.1",
     "graphql": "^14.4.2",
     "graphql-tools": "^4.0.5",

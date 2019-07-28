@@ -9,7 +9,7 @@ export const createTokens = async (user, secret, secret2) => {
     },
     secret,
     {
-      expiresIn: '1h',
+      expiresIn: '1m',
     },
   );
 
@@ -26,32 +26,33 @@ export const createTokens = async (user, secret, secret2) => {
   return [createToken, createRefreshToken];
 };
 
-export const refreshTokens = async (token, refreshToken, models, SECRET) => {
-  let userId = -1;
+export const refreshTokens = async (token, refreshToken, models, SECRET, SECRET2) => {
+  let userId = 0;
   try {
     const { user: { id } } = jwt.decode(refreshToken);
     userId = id;
-  } catch (error) {
+  } catch (err) {
     return {};
   }
 
   if (!userId) {
     return {};
   }
-
-  const user = await models.user.findOne({ where: { id: userId }, raw: true });
+  const user = await models.User.findOne({ where: { id: userId } });
 
   if (!user) {
     return {};
   }
 
-  try {
-    jwt.verify(refreshToken, user.refreshSecret);
-  } catch (error) {
-    return {};
-  }
+  const refreshSecret = user.password + SECRET2;
 
-  const [newToken, newRefreshToken] = await createTokens(user, SECRET, user.refreshSecret);
+  // try {
+  //   jwt.verify(refreshToken, refreshSecret);
+  // } catch (err) {
+  //   return {};
+  // }
+
+  const [newToken, newRefreshToken] = await createTokens(user, SECRET, refreshSecret);
   return {
     token: newToken,
     refreshToken: newRefreshToken,
@@ -59,7 +60,7 @@ export const refreshTokens = async (token, refreshToken, models, SECRET) => {
   };
 };
 
-export const tryLogin = async (email, password, models, SECRET, SECRET2) => {
+export const tryLogin = async (email, password, { models, SECRET, SECRET2 }) => {
   const user = await models.User.findOne({ where: { email }, raw: true });
   if (!user) {
     return {
@@ -84,4 +85,23 @@ export const tryLogin = async (email, password, models, SECRET, SECRET2) => {
     token,
     refreshToken,
   };
+};
+
+export const getUser = async (token, refreshToken, secret, secret2, models, res) => {
+  let userId;
+  if (token) {
+    try {
+      const { user } = jwt.verify(token, secret);
+      userId = user;
+    } catch (error) {
+      const newTokens = await refreshTokens(token, refreshToken, models, secret, secret2);
+      if (newTokens.token && newTokens.refreshToken) {
+        res.set('Access-Control-Expose-Headers', 'x-token', 'x-refresh-token');
+        res.set('x-token', newTokens.token);
+        res.set('x-refresh-token', newTokens.refreshToken);
+      }
+      userId = newTokens.user;
+    }
+  }
+  return userId;
 };
