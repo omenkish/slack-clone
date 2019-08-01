@@ -9,7 +9,12 @@ export default `
 
   type CreateTeamResponse {
     ok: Boolean!
+    team: Team!
     errors: [Error!]
+  }
+
+  type Query {
+    allTeams: [Team!]!
   }
 
   type Mutation {
