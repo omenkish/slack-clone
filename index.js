@@ -13,7 +13,31 @@ const server = new ApolloServer({
   // These will be defined for both new or existing servers
   typeDefs,
   resolvers,
-  context: async ({ req, res }) => {
+  // subscriptions: {
+  //   onConnect: async (connectionParams, webSocket) => {
+  //     console.log('webSocket :', webSocket.headers);
+  //     if (connectionParams['x-token'] && connectionParams['x-refresh-token']) {
+  //       const token = connectionParams['x-token'];
+  //       const refreshToken = connectionParams['x-refresh-token'];
+  //       const user = await getUser(token, refreshToken, SECRET, SECRET2, models);
+  //       return {
+  //         user,
+  //       };
+  //     }
+
+  //     throw new Error('Missing auth token!');
+  //   },
+  // },
+  context: async ({ req, connection, res }) => {
+    if (connection) {
+      const token = connection.context['x-token'];
+      const refreshToken = connection.context['x-refresh-token'];
+      const user = await getUser(token, refreshToken, SECRET, SECRET2, models, res);
+      return {
+        ...connection.context,
+        user,
+      };
+    }
     const token = req.headers['x-token'] || '';
     const refreshToken = req.headers['x-refresh-token'] || '';
     const user = await getUser(token, refreshToken, SECRET, SECRET2, models, res);

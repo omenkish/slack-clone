@@ -44,8 +44,6 @@ export default {
           ok: true,
         };
       } catch (error) {
-        // eslint-disable-next-line no-console
-        console.log(error);
         return {
           ok: false,
           errors: formatErrors(error, models),
