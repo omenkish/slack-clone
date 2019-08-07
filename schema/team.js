@@ -2,9 +2,9 @@ export default `
   type Team {
     id: ID!
     name: String!
-    owner: ID!
     members: [User!]!
     channels: [Channel!]!
+    admin: Boolean!
   }
 
   type CreateTeamResponse {
