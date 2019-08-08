@@ -11,11 +11,14 @@ export default (sequelize, DataTypes) => {
 
   DirectMessage.associate = (models) => {
     // 1:M
-    DirectMessage.belongsTo(models.User, {
-      foreignKey: 'sender',
+    DirectMessage.belongsTo(models.Team, {
+      foreignKey: 'teamId',
     });
     DirectMessage.belongsTo(models.User, {
-      foreignKey: 'receiver',
+      foreignKey: 'senderId',
+    });
+    DirectMessage.belongsTo(models.User, {
+      foreignKey: 'receiverId',
     });
   };
 

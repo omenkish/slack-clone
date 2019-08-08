@@ -20,7 +20,7 @@ const server = new ApolloServer({
         if (!user) return { models };
         return {
           models,
-          user,
+          user: user.dataValues,
         };
       }
 
@@ -29,12 +29,8 @@ const server = new ApolloServer({
   },
   context: async ({ req, connection, res }) => {
     if (connection) {
-      const { token, refreshToken } = connection.context;
-      const user = await getUser(token, refreshToken, SECRET, SECRET2, models, res);
       return {
         ...connection.context,
-        models,
-        user,
       };
     }
     const token = req.headers['x-token'] || '';
@@ -50,7 +46,7 @@ const server = new ApolloServer({
   },
 });
 
-models.sequelize.sync().then(() => {
+models.sequelize.sync({}).then(() => {
   server.listen({ port: 8080 }).then(({ url }) => {
     // eslint-disable-next-line no-console
     console.log(`🚀  Server ready at ${url}`);
