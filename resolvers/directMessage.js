@@ -3,7 +3,6 @@ import requiresAuth from '../utils/permissions';
 export default {
   DirectMessage: {
     sender: ({ sender, senderId }, args, { models }) => {
-      console.log('senderId >>>>>>>>>>>>>>>>:', senderId);
       if (sender) {
         return sender;
       }
