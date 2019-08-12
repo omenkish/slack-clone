@@ -10,6 +10,7 @@ export default `
   type Query {
     me: User!
     allUsers: [User!]!
+    getUser(userId: ID!): User
   }
 
   type RegisterResponse {
