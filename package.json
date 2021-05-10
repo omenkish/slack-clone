@@ -31,7 +31,7 @@
     "graphql": "^14.4.2",
     "graphql-tools": "^4.0.5",
     "jsonwebtoken": "^8.5.1",
-    "lodash": "^4.17.14",
+    "lodash": "^4.17.21",
     "merge-graphql-schemas": "^1.5.8",
     "pg": "^7.11.0",
     "sequelize": "^5.10.0"
